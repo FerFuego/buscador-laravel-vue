@@ -14,5 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
+});
+
+Route::get('/posts', function () {
+    return response()->json([
+        'posts' => \App\Models\Post::all()
+    ]);
+});
+
+Route::post('/posts/search', function () {
+
+    $posts = \App\Models\Post::where('title', 'LIKE',  '%'.request()->q.'%' )
+            ->orWhere('content', 'LIKE', '%'.request()->q.'%')
+            ->limit(20)
+            ->get();
+
+    return response()->json([
+        'posts' => $posts
+    ]);
 });

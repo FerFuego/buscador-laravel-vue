@@ -17,20 +17,6 @@ Route::get('/', function () {
     return view('app');
 });
 
-Route::get('/posts', function () {
-    return response()->json([
-        'posts' => \App\Models\Post::all()
-    ]);
-});
+Route::get('/posts', 'App\Http\Controllers\PostController@index');
 
-Route::post('/posts/search', function () {
-
-    $posts = \App\Models\Post::where('title', 'LIKE',  '%'.request()->q.'%' )
-            ->orWhere('content', 'LIKE', '%'.request()->q.'%')
-            ->limit(20)
-            ->get();
-
-    return response()->json([
-        'posts' => $posts
-    ]);
-});
+Route::post('/posts/search', 'App\Http\Controllers\PostController@search');
